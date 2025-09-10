@@ -129,7 +129,9 @@ function UrlShortner() {
                     <div className="card mb-4 box-shadow">
                       <div className="text-center pt-4">
                         <QRCodeCanvas
-                          value={item.shortLink}
+                          value={`${
+                            import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL
+                          }/${item.shortLink}`}
                           size={150}
                           ref={(el) => {
                             // console.log(el, " ", ++i);
