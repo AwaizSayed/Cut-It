@@ -218,6 +218,6 @@ VITE_REACT_APP_BACKEND_BASE_URL=
 
 ## 👨‍💻 Author
 
-**Awaiz Sayed**
+**Awaiz Sayed*
 
 GitHub: https://github.com/AwaizSayed
