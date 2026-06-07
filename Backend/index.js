@@ -7,9 +7,7 @@ const Url = require("./config/server");
 require("dotenv").config();
 
 mongoose
-  .connect(
-    `mongodb+srv://${process.env.DB_ACCOUNT_PASSWORD}@cluster0.q7zsbbq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
-  )
+  .connect(process.env.MONGODB_URI)
   .then((res) => console.log("database connected"))
   .catch((err) => console.log(err));
 
@@ -30,13 +28,14 @@ app.post("/shortner", async (req, res) => {
   }
   const shortCode = shortid.generate().slice(0, 5);
   await Url.create({ fullLink: fullUrl, shortLink: shortCode }).then((res) =>
-    console.log(res)
+    console.log(res),
   );
   res.json(shortCode);
 });
 
 app.get("/fulldata", async (req, res) => {
   await Url.find()
+    .sort({ _id: -1 })
     .then((result) => res.json(result))
     .catch((err) => console.log(err));
   // console.log(data);

@@ -17,9 +17,9 @@ function UrlShortner() {
       })
       .then((res) => {
         setShortLink(
-          `${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/${res.data}`
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/${res.data}`,
         );
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => console.log(err));
     setShowQR(false);
@@ -36,7 +36,7 @@ function UrlShortner() {
   }, []);
 
   async function deleteData(id) {
-    console.log(id);
+    // console.log(id);
     await axios
       .delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/delete/` + id)
       .then((res) => {
@@ -94,7 +94,7 @@ function UrlShortner() {
 
   if (data.length < 1) {
     ++i;
-    console.log(data, i);
+    // console.log(data, i);
 
     return (
       <div>
@@ -113,15 +113,17 @@ function UrlShortner() {
               {data.map((item, index) => {
                 let canvasEl = null;
 
-                const printQR = () => {
+                const printQR = async () => {
                   if (!canvasEl) {
                     return;
                   }
                   const dataUrl = canvasEl.toDataURL("image/png");
+
                   const win = window.open(dataUrl);
                   win.document.write(`<img src="${dataUrl}" />`);
-                  win.print();
-                  win.close();
+                  await win.open();
+                  await win.print();
+                  await win.close();
                 };
 
                 return (
@@ -189,7 +191,7 @@ function UrlShortner() {
                                   `${
                                     import.meta.env
                                       .VITE_REACT_APP_BACKEND_BASE_URL
-                                  }/${item.shortLink}`
+                                  }/${item.shortLink}`,
                                 );
                                 alert("Copied to clipboard");
                               }}
