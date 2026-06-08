@@ -14,9 +14,7 @@ app.use(express.json());
 
 app.use("/short-url", shortUrlRouter);
 
-app.get("/", (req, res) => {
-  res.send("<div><h1 style='text-align:center'>Backend of cut-it</h1></div>");
-});
+
 
 app.get("/:shortcode", async (req, res) => {
   const url = await shortUrlModel.findOne({ shortLink: req.params.shortcode });
