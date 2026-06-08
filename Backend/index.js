@@ -16,30 +16,71 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("<div><h1>Backend of cut-it</h1></div>");
 });
-app.post("/shortner", async (req, res) => {
+
+app.post("/short-url/short-it", async (req, res) => {
   const { fullUrl } = req.body;
-  let watch;
-  await Url.findOne({ fullLink: fullUrl }).then((res) => {
-    watch = res;
-  });
-  if (watch) {
-    console.log(watch);
-    return res.json(watch.shortLink);
+  try {
+    const urlExist = await Url.find({ fullLink: fullUrl });
+    if (urlExist.length > 0) {
+      // console.log("find:", urlExist);
+      return res.json({ message: "link already exist", data: urlExist[0] });
+    }
+
+    const shortCode = await shortid.generate().slice(0, 5);
+    const addLink = await Url.create({
+      fullLink: fullUrl,
+      shortLink: shortCode,
+    });
+    if (addLink) {
+      // console.log(addLink);
+      res.json({ message: "Data Added Successfully", data: shortCode });
+    }
+  } catch (error) {
+    console.error(error);
+    res.json(error);
   }
-  const shortCode = shortid.generate().slice(0, 5);
-  await Url.create({ fullLink: fullUrl, shortLink: shortCode }).then((res) =>
-    console.log(res),
-  );
-  res.json(shortCode);
 });
 
-app.get("/fulldata", async (req, res) => {
-  await Url.find()
-    .sort({ _id: -1 })
-    .then((result) => res.json(result))
-    .catch((err) => console.log(err));
-  // console.log(data);
+app.get("/short-url/all-url", async (req, res) => {
+  try {
+    const data = await Url.find().sort({ _id: -1 });
+    res.json(data);
+    // console.log(data);
+  } catch (error) {
+    console.error(error);
+    res.json(error);
+  }
 });
+
+app.delete("/short-url/delete-url/:id", async (req, res) => {
+  const linkId = req.params.id;
+  try {
+    const data = await Url.findOneAndDelete({ _id: req.params.id });
+    if (data) {
+      res.json(data);
+    } else {
+      res.json({ message: "data not found" });
+    }
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+app.listen(3001, () => {
+  console.log("Running");
+});
+
+///---Bin---
+// let watch;
+//   await Url.findOne({ fullLink: fullUrl }).then((res) => {
+//     watch = res;
+//   });
+//   if (watch) {
+//     console.log(watch);
+//     return res.json(watch.shortLink);
+//   }
+/* 
+
 
 app.get("/:shortcode", async (req, res) => {
   const url = await Url.findOne({ shortLink: req.params.shortcode });
@@ -49,13 +90,4 @@ app.get("/:shortcode", async (req, res) => {
   res.redirect(url.fullLink);
 });
 
-app.delete("/delete/:id", async (req, res) => {
-  console.log(req.params.id);
-  Url.findByIdAndDelete(req.params.id)
-    .then((result) => res.json(result))
-    .catch((err) => console.log(err));
-});
-
-app.listen(3001, () => {
-  console.log("Running");
-});
+*/

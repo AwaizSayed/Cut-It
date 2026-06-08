@@ -4,44 +4,73 @@ import { QRCodeCanvas } from "qrcode.react";
 import { useEffect } from "react";
 
 function UrlShortner() {
-  let [shortLink, setShortLink] = useState("http://localhost:5173/");
-  let [showQR, setShowQR] = useState(false);
-  let [data, setData] = useState([]);
-  let i = 0;
+  const [shortLink, setShortLink] = useState("");
+  const [showQR, setShowQR] = useState(false);
+  const [data, setData] = useState([]);
+  // let i = 0;
 
   async function handleClick() {
-    const url = document.getElementById("url").value;
-    await axios
-      .post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/shortner`, {
-        fullUrl: url,
-      })
-      .then((res) => {
-        setShortLink(
-          `${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/${res.data}`,
+    const url = await document.getElementById("url").value;
+    try {
+      if (url) {
+        // console.log(url);
+        const data = await axios.post(
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/short-url/short-it`,
+          {
+            fullUrl: url,
+          },
         );
-        // console.log(res);
-      })
-      .catch((err) => console.log(err));
-    setShowQR(false);
-    getData();
+        if (data.data) {
+          setShortLink(
+            `${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/${url}`,
+          );
+          alert(data.data.message);
+        }
+
+        setShowQR(false);
+        getData();
+      } else {
+        alert("Please paste url first");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function getData() {
-    await axios
-      .get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/fulldata`)
-      .then((res) => setData(res.data));
+    try {
+      const data = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/short-url/all-url`,
+      );
+
+      if (data) {
+        // console.log(data.data);
+        setData(data.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
+
   useEffect(() => {
     getData();
   }, []);
 
   async function deleteData(id) {
     // console.log(id);
-    await axios
-      .delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/delete/` + id)
-      .then((res) => {
-        getData();
-      });
+    try {
+      const data = await axios.delete(
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/short-url/delete-url/` +
+          id,
+      );
+      if (data) {
+        // console.log(data.data);
+        alert(data.data.message);
+      }
+      getData();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function addIt() {
@@ -93,7 +122,7 @@ function UrlShortner() {
   }
 
   if (data.length < 1) {
-    ++i;
+    // ++i;
     // console.log(data, i);
 
     return (
@@ -231,3 +260,10 @@ function UrlShortner() {
 }
 
 export default UrlShortner;
+
+//---bin---
+/*
+.then((res) => {
+        getData();
+      });
+*/
