@@ -154,16 +154,23 @@ Users can remove previously generated URLs that are no longer required.
 ## 📂 Project Structure
 
 ```plaintext
+
 Cut-It/
 │
 ├── Backend/
-│   ├── config/              # Mongoose schemas
-│   ├── index.js             # Express server
-│   └── vercel.json          # Vercel backend config
+│   ├── deprecated_config/              # Mongoose schemas(not in use)
+│   ├── src/
+│   │   ├── config/                     # Database config
+│   │   ├── controllers/                # Business logic
+│   │   ├── models/                     # Mongoose schemas
+│   │   └── routers/                    # API routes
+│   │
+│   ├── index.js                        # Express server
+│   └── vercel.json                     # Vercel backend config
 │
 ├── cut-it/
 │   ├── src/
-│   │   ├── Components/      # Reusable UI components
+│   │   ├── Components/                 # Reusable UI components
 │   │   ├── App.jsx
 │   │   └── main.jsx
 │   ├── public/
