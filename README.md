@@ -213,6 +213,7 @@ Backend `.env`
 
 ```env
 MONGODB_URI=
+NODE_FRONTEND_URL=
 ```
 
 Frontend `.env`
