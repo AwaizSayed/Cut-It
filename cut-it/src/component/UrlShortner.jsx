@@ -43,7 +43,7 @@ function UrlShortner() {
         `${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/short-url/all-url`,
       );
 
-      if (data) {
+      if (data.data) {
         // console.log(data.data);
         setData(data.data);
       }
