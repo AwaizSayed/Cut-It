@@ -1,5 +1,6 @@
 // const app = require("./src/app");
 const connectToDB = require("./src/config/db");
+connectToDB();
 const express = require("express");
 const app = express();
 const shortid = require("shortid");
@@ -7,8 +8,6 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const shortUrlRouter = require("./src/routers/shortUrlRouter");
 const shortUrlModel = require("./src/models/shortUrlModel");
-
-connectToDB();
 
 dotenv.config();
 

@@ -143,16 +143,23 @@ function UrlShortner() {
                 let canvasEl = null;
 
                 const printQR = async () => {
-                  if (!canvasEl) {
-                    return;
-                  }
-                  const dataUrl = canvasEl.toDataURL("image/png");
+                  const canvas = document.querySelector("canvas");
+                  const url = canvas.toDataURL("image/png");
 
-                  const win = window.open(dataUrl);
-                  win.document.write(`<img src="${dataUrl}" />`);
-                  await win.open();
-                  await win.print();
-                  await win.close();
+                  const link = document.createElement("a");
+                  link.href = url;
+                  link.download = "qrcode.png";
+                  link.click();
+                  // if (!canvasEl) {
+                  //   return;
+                  // }
+                  // const dataUrl = canvasEl.toDataURL("image/png");
+
+                  // const win = window.open(dataUrl);
+                  // win.document.write(`<img src="${dataUrl}" />`);
+                  // await win.open();
+                  // await win.print();
+                  // await win.close();
                 };
 
                 return (
@@ -232,7 +239,7 @@ function UrlShortner() {
                               className="btn btn-sm btn-outline-secondary"
                               onClick={printQR}
                             >
-                              Print QR
+                              Download QR
                             </button>
                             <button
                               type="button"
