@@ -142,8 +142,8 @@ function UrlShortner() {
               {data.map((item, index) => {
                 let canvasEl = null;
 
-                const printQR = async () => {
-                  const canvas = document.querySelector("canvas");
+                const printQR = (canvas) => {
+                  // const canvas = document.querySelector("canvas");
                   const url = canvas.toDataURL("image/png");
 
                   const link = document.createElement("a");
@@ -237,7 +237,7 @@ function UrlShortner() {
                             <button
                               type="button"
                               className="btn btn-sm btn-outline-secondary"
-                              onClick={printQR}
+                              onClick={() => printQR(canvasEl)}
                             >
                               Download QR
                             </button>

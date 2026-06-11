@@ -33,7 +33,7 @@ The project demonstrates full-stack web development concepts including REST APIs
 - Generate shortened URLs
 - Generate QR codes for shortened URLs
 - Copy shortened URLs instantly
-- Print generated QR codes
+- Download generated QR codes
 - Delete existing URLs
 - Responsive user interface
 - REST API integration
@@ -89,12 +89,12 @@ Users can copy the generated shortened URL with a single click.
 
 ---
 
-### Step 6: Print QR Code
+### Step 6: Download QR Code
 
 [Add Screenshot Here]
 
 Description:
-Users can print the generated QR code for offline usage and sharing.
+Users can Download the generated QR code for offline usage and sharing.
 
 ---
 
